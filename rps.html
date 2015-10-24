@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Game</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<style>
+	.show {
+		margin:0 20px 0 10px;
+		width:60px;
+		display:inline-block;
+		font-size:1.2rem;
+	}
+	
+	body {
+		margin:13px;
+		display:inline-block;
+	}
+</style>
+
+</head>
+<body>
+<div style="width:300px; height:300px; border:solid;">
+	<div class="new_game" style="width:100%; height:50px; font-size:2rem; margin:20px 0 20px 0; text-align:center;">
+		Pick a hand!
+	</div>
+	
+	<div class="new_game" style="100%; height:50%; margin:10px; text-align:center;">
+		<button id="rock_button" style="margin:10px; width:90%; height:20%;" onclick="play('Rock')">Rock</button>
+		<button id="paper_button" style="margin:10px; width:90%; height:20%;" onclick="play('Paper')">Paper</button>
+		<button id="scissors_button" style="margin:10px; width:90%; height:20%;" onclick="play('Scissors')">Scissors</button>
+	</div>
+	
+	<div id="display" style="text-align:center; width:100%; height:70%; margin:30px 0 10px; 0; display:none;">
+
+		<strong><p id="beats" style="font-size:1.2rem;"></p></strong>
+		<br/>
+		<strong><p id="result" style="font-size:1.2rem; margin-top:0px;"></p></strong>
+		<br/>
+		<button style="margin:10px; height:30px; width:100px;" onclick="new_game()">New game</button>
+	</div>
+	
+	<div style="width:100%; height 30px; text-align:center;">
+		<p id="W" class="show">Wins:0</p>
+		<p id="D" class="show">Draws:0</p>
+		<p id="L" class="show">Losses:0</p>
+	</div>
+	
+</div>
+
+
+
+<script>
+	var wins = 0;
+	var losses = 0;
+	var draws = 0;
+
+	// This code can run the game automatically i number of times
+	/*
+	for(var i = 0; i<100; i++){
+		var r = (Math.random() * 100) + 1;
+		if(r < 33) $("#rock_button").click();
+		else if(r < 66) guess = $("#paper_button").click();
+		else r = $("#scissors_button").click();
+		new_game();
+	}
+	*/
+	
+	function play(guess){
+		var random = (Math.random() * 100) + 1;
+		var pc = "";
+		
+		if(random < 33) pc = "Rock";
+		else if(random < 66) pc = "Paper";
+		else pc = "Scissors";
+		
+		
+		if(guess == pc)
+			you_draw(guess,pc);
+		else if(guess == "Rock" && pc == "Paper")
+			you_lose(guess,pc);
+		else if(guess == "Rock" && pc == "Scissors")
+			you_win(guess,pc);
+		else if(guess == "Paper" && pc == "Rock")
+			you_win(guess,pc);
+		else if(guess == "Paper" && pc == "Scissors")
+			you_lose(guess,pc);
+		else if(guess == "Scissors" && pc == "Rock")
+			you_lose(guess,pc);
+		else if(guess == "Scissors" && pc == "Paper")
+			you_win(guess,pc);
+			
+		$(".new_game").hide();
+		$("#display").show();
+	};
+
+	function you_win(guess, pc){
+		$("#result").html("You Won!");
+		$("#beats").html(guess + " beats " + pc + "!");
+		setW();
+	}
+	
+	function you_draw(guess, pc){
+		$("#result").html("You Drew");
+		$("#beats").html(guess + " draws " + pc);
+		setD();
+	}
+	
+	function you_lose(guess, pc){
+		$("#result").html("You Lost");
+		$("#beats").html(pc + " beats " + guess);
+		setL();
+	}
+	
+	function new_game(){
+		unBold();
+		$(".new_game").show();
+		$("#display").hide();
+	}
+	
+	function unBold(){
+		$("#W").html("Wins:"+wins);
+		$("#D").html("Draws:"+draws);
+		$("#L").html("Losses:"+losses);
+	}
+	
+	function setW(){
+		wins++;
+		unBold();
+		$("#W").html("<strong>Wins:"+wins+"</strong>");
+		
+	}
+	
+	function setD(){
+		draws++;
+		unBold();
+		$("#D").html("<strong>Draws:"+draws+"</strong>");
+	}
+	
+	function setL(){
+		losses++;
+		unBold();
+		$("#L").html("<strong>Losses:"+losses+"</strong>");
+	}
+
+
+</script>
+
+</body>
+</html>
